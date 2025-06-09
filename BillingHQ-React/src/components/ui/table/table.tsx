@@ -1,18 +1,18 @@
 // src/components/ui/Table.tsx
 import React from 'react';
-import type { TableColumn, TableRowData } from '../../../types/table';
+import type { TableColumn } from '../../../types/table';
 
-interface TableProps<T extends TableRowData> {
-  data: T[];
-  columns: TableColumn<T>[];
+interface TableProps {
+  data: unknown[];
+  columns: TableColumn[];
   className?: string;
   headerClassName?: string;
-  rowClassName?: string | ((row: T) => string);
+  rowClassName?: string | ((row: unknown) => string);
   cellClassName?: string;
   emptyMessage?: string;
 }
 
-function Table<T extends TableRowData>({
+function Table({
   data,
   columns,
   className,
@@ -20,7 +20,7 @@ function Table<T extends TableRowData>({
   rowClassName,
   cellClassName,
   emptyMessage = "No hay datos para mostrar.",
-}: TableProps<T>) {
+}: TableProps) {
   if (!data || data.length === 0) {
     return (
       <div className="p-4 text-center text-gray-500 bg-white rounded-lg shadow-sm">
@@ -48,22 +48,20 @@ function Table<T extends TableRowData>({
         <tbody className="bg-white divide-y divide-gray-200">
           {data.map((row, rowIndex) => (
             <tr
-              // Es crucial usar un ID único del row si está disponible en tus datos,
-              // de lo contrario, rowIndex es un fallback pero puede causar problemas con reordenamientos.
               key={(row as { id?: string | number }).id || rowIndex}
               className={typeof rowClassName === 'function' ? rowClassName(row) : rowClassName}
             >
               {columns.map((column) => (
-                <td
-                  key={column.key as string}
-                  className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${cellClassName || ''} ${column.className || ''}`}
-                >
-                  {column.render
-                    ? column.render(row)
-                    : (row[column.key] as React.ReactNode)
-                  }
-                </td>
-              ))}
+              <td
+                key={column.key as string}
+                className={`px-6 py-4 whitespace-nowrap text-sm text-gray-900 ${cellClassName || ''} ${column.className || ''}`}
+              >
+                {column.render
+                  ? column.render(row)
+                  : ((row as { [key: string]: React.ReactNode })[column.key])
+                }
+              </td>
+            ))}
             </tr>
           ))}
         </tbody>

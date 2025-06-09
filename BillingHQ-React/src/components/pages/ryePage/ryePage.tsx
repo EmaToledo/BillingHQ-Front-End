@@ -1,6 +1,6 @@
 import React from "react";
 import { ryeColumns, type Rye } from "../../../types/rye.d";
-import Table from "../../ui/genericTable/genericTable";
+import Table from "../../ui/table/table";
 
 function RYEPage() {
     const ryesData: Rye[] = [

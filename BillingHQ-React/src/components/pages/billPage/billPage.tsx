@@ -1,6 +1,6 @@
 import React from 'react';
 import { billColumns, type Bill } from '../../../types/bill.d';
-import Table from '../../ui/genericTable/genericTable';
+import Table from '../../ui/table/table';
 
 function BillPage(){
     const billsData: Bill[] = [

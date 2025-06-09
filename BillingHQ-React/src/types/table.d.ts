@@ -1,11 +1,12 @@
+// src/types/table.ts
 interface TableRowData {
   [key: string]: unknown;
 }
 
-interface TableColumn<T extends TableRowData> {
-  key: keyof T;
+interface TableColumn {
+  key: string;
   header: string;
-  render?: (row: T) => React.ReactNode;
+  render?: (row: unknown) => React.ReactNode;
   className?: string;
   headerClassName?: string;
 }

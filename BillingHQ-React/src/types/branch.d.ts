@@ -1,20 +1,18 @@
 import { TableColumn } from './table';
 
-export interface Branch {
+export interface Branch{
   id_branch: number;
   name: string;
-  cuit: string;
-  phone_number: string;
+  cuit: number;
+  phone_number: number;
   mail: string;
   id_president: number | null; // todo -> change to get userModel
   id_treasurer: number | null; // todo -> change to get userModel
   state: 'Active' | 'Unpaid' | 'Inactive';
-  code: number;
-
-  [key: string]: unknown;
+  code: string;
 }
 
-export const branchColumns: TableColumn<Branch>[] = [
+export const branchColumns: TableColumn[] = [
   { key: 'id_branch', header: 'ID Club' },
   { key: 'name', header: 'Nombre' },
   { key: 'cuit', header: 'CUIT' },

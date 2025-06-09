@@ -1,6 +1,6 @@
 import React from "react";
 import { paymentColumns, type Payment } from "../../../types/payment.d";
-import Table from "../../ui/genericTable/genericTable";
+import Table from "../../ui/table/table";
 
 function PaymentPage(){
     const paymentsData: Payment[] = [

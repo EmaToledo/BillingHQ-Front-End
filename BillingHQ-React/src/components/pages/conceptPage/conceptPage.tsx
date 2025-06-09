@@ -1,6 +1,6 @@
 import React from 'react';
 import { conceptColumns, type Concept } from '../../../types/concept.d';
-import Table from '../../ui/genericTable/genericTable';
+import Table from '../../ui/table/table';
 
 function ConceptPage(){
     const conceptsData: Concept[] = [

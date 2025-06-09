@@ -1,6 +1,6 @@
 import React from "react";
 import { associateColumns, type Associate } from "../../../types/associate.d";
-import Table from "../../ui/genericTable/genericTable";
+import Table from "../../ui/table/table";
 
 function AssociatePage() {
     const associatesData: Associate[] = [

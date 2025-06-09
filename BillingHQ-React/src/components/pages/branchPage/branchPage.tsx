@@ -1,15 +1,29 @@
-import React from "react";
+import * as React from "react";
+import { useState } from "react";
+import Table from '../../ui/table/table';
+import AddClubModal from "./AddBranchModal";
 import { branchColumns, type Branch } from "../../../types/branch.d";
-import Table from '../../ui/genericTable/genericTable';
 
 function BranchPage(){
-    const branchesData: Branch[] = [
-        { id_branch: 1, name: 'Rotary-MendozaCapital', cuit: '52es', phone_number: '104556', mail: 'hamani@gmail.me', id_president: 878, id_treasurer: 414, state: 'Active', code: 3166 },
-        { id_branch: 2, name: 'Rotary-SanFrancisco', cuit: '4710', phone_number: '133510', mail: 'a@freeml.net', id_president: 12, id_treasurer: 1604, state: 'Unpaid', code: 3167 },
-        { id_branch: 3, name: 'Rotary-Cordoba', cuit: '4710', phone_number: '133510', mail: 'asdas@qweqwe.com', id_president: 12, id_treasurer: 1604, state: 'Inactive', code: 3168 },
-        { id_branch: 4, name: 'Rotary-Catamarca', cuit: '4710', phone_number: '133510', mail: 'qweqweq@eqwe.com', id_president: 12, id_treasurer: 1604, state: 'Active', code: 3169 },
-        { id_branch: 5, name: 'Rotary-Salta', cuit: '4710', phone_number: '133510', mail: 'qweqwe@eqwewe.com', id_president: 12, id_treasurer: 1604, state: 'Unpaid', code: 3170 }
-    ];
+    const [branchesData, setBranchesData] = useState<Branch[]>([
+        { id_branch: 1, name: 'Rotary-MendozaCapital', cuit: 20837492738, phone_number: 104556, mail: 'hamani@gmail.me', id_president: 878, id_treasurer: 414, state: 'Active', code: 'B3166' },
+        { id_branch: 2, name: 'Rotary-SanFrancisco', cuit: 20837492739, phone_number: 104557, mail: 'a@freeml.net', id_president: 12, id_treasurer: 1604, state: 'Unpaid', code: 'B3167' },
+        { id_branch: 3, name: 'Rotary-Cordoba', cuit: 20837492740, phone_number: 104558, mail: 'asdas@qweqwe.com', id_president: 12, id_treasurer: 1604, state: 'Inactive', code: 'B3168' },
+        { id_branch: 4, name: 'Rotary-Catamarca', cuit: 20837492741, phone_number: 104559, mail: 'qweqweq@eqwe.com', id_president: 12, id_treasurer: 1604, state: 'Active', code: 'B3169' },
+        { id_branch: 5, name: 'Rotary-Salta', cuit: 20837492742, phone_number: 104560, mail: 'qweqwe@eqwewe.com', id_president: 12, id_treasurer: 1604, state: 'Unpaid', code: 'B3170' }
+    ]);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOpenModal = () => setIsModalOpen(true);
+    const handleCloseModal = () => setIsModalOpen(false);
+
+    const handleAddClub = (newBranchData: Omit<Branch, 'id_branch'>) => {
+        const newId = branchesData.length > 0 ? Math.max(...branchesData.map(b => b.id_branch)) + 1 : 1;
+        const branchToAdd: Branch = { id_branch: newId, ...newBranchData };
+        setBranchesData(prev => [...prev, branchToAdd]);
+        console.log("Nuevo club agregado (simulado):", branchToAdd);
+    };
 
     return(
         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -18,7 +32,10 @@ function BranchPage(){
                     <h1 className="text-3xl font-bold text-gray-800">Clubes</h1>
                     <p className="text-gray-600">Gestiona la información de los clubes</p>
                 </div>
-                <button className="px-4 py-2 bg-[#46A2E3] text-white rounded-md hover:bg-[#46A2E3]/85 transition-colors flex items-center gap-2">
+                <button
+                    onClick={handleOpenModal}
+                    className="px-4 py-2 bg-[#46A2E3] text-white rounded-md hover:bg-[#46A2E3]/85 transition-colors flex items-center gap-2"
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
@@ -51,6 +68,12 @@ function BranchPage(){
                     <button className="px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors">Siguiente</button>
                 </div>
             </div>
+
+            <AddClubModal
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                onAddClub={handleAddClub}
+            />
         </div>
     );
 }
