@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import "./App.css";
 import Sidebar from "./components/ui/sidebar/sidebar";
 import DashboardPage from "./components/pages/dashboardPage/dashboardPage";
@@ -16,13 +16,13 @@ import ProtectedRoute from "./auth/protectedRoute";
 
 const AppContent: React.FC = () => {
   const { isAuthenticated, isLoadingAuth, logout } = useAuth();
+  const location = useLocation();
 
   useEffect(() => {
     setLogoutFunction(logout);
   }, [logout]);
 
-
-  if (isLoadingAuth) {
+  if (isLoadingAuth && location.pathname !== '/auth') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <p className="text-gray-700 text-lg">Cargando autenticación...</p>
@@ -36,8 +36,10 @@ const AppContent: React.FC = () => {
 
       <main className="flex-1 text-black min-h-screen">
         <Routes>
-          <Route path="/auth" element={isAuthenticated ? (<Navigate to="/dasboard" replace />) : (<LoginPage />)}/>
-          
+          <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Navigate to="/auth" replace />} />
+
+          <Route path="/auth" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
+
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/branches" element={<BranchPage />} />
@@ -48,7 +50,7 @@ const AppContent: React.FC = () => {
             <Route path="/bill-notes" element={<BillPage />} />
           </Route>
 
-          <Route path="*" element={ isAuthenticated ? <Navigate to="/dashboard" replace /> : <Navigate to="/auth" replace />} />
+          <Route path="*" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Navigate to="/auth" replace />} />
         </Routes>
       </main>
     </div>
